@@ -1,0 +1,6 @@
+/.idea
+*.pyc
+/static
+/db.sqlite3
+QuyenEnv
+*.sqlite3
