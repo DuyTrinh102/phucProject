@@ -35,7 +35,8 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'rest_framework.authtoken'
+	'rest_framework.authtoken',
+	'devices'
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,10 @@ REST_FRAMEWORK = {
 		'rest_framework.permissions.IsAuthenticated',
 	)
 }
+
+AUTHENTICATION_BACKENDS = [
+	'django.contrib.auth.backends.ModelBackend',
+]
 
 ROOT_URLCONF = 'phucProject.urls'
 
@@ -112,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
