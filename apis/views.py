@@ -20,8 +20,8 @@ def api_sign_in(request):
 	if user:
 		token = user_detail(user)
 		login(request, user)
-		return Response({"result": True, "message": "Successful", "data": token}, status=status.HTTP_200_OK)
-	return Response({"result": False, "message": "Username or password is wrong", "data": {}}, status=status.HTTP_200_OK)
+		return Response({"result": True, "message": "Successful", "data": [token]}, status=status.HTTP_200_OK)
+	return Response({"result": False, "message": "Username or password is wrong", "data": []}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -52,11 +52,42 @@ def api_device_add(request):
 	if not error:
 		try:
 			device = Device.objects.create(serial=serial, name=name, unit=unit, description=description, customer=request.user)
-			return Response({"result": True, "message": "Successful", "data": {"device_id": device.id}}, status=status.HTTP_200_OK)
+			return Response({"result": True, "message": "Successful", "data": [{"device_id": device.id}]}, status=status.HTTP_200_OK)
 		except IntegrityError:
 			error.append({
 				"field": "serial",
 				"message": "This device is existed"
+			})
+	return Response({"result": False, "message": "Error!!!", "data": error}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes((permissions.IsAuthenticated,))
+def api_device_measure_list(request):
+	serial = request.data.get('serial', '')
+	error = []
+	if not serial:
+		error.append({
+			"field": "serial",
+			"message": "Serial is required"
+		})
+	elif not serial.isalnum():
+		error.append({
+			"field": "serial",
+			"message": "Serial is invalid"
+		})
+
+	if not error:
+		try:
+			device = Device.objects.get(serial=serial, customer=request.user)
+			data = device.measure.all().values('value', 'receive_at')
+			for temp in data:
+				temp['receive_at'] = temp['receive_at'].strftime("%Y-%m-%d %H:%M")
+			return Response({"result": True, "message": "Successful", "data": data}, status=status.HTTP_200_OK)
+		except Device.DoesNotExist:
+			error.append({
+				"field": "serial",
+				"message": "This device is not existed"
 			})
 	return Response({"result": False, "message": "Error!!!", "data": error}, status=status.HTTP_200_OK)
 
@@ -95,5 +126,5 @@ def api_device_measure_update(request):
 		else:
 			measure = Measurement.objects.create(value=value)
 			device.measure.add(measure)
-			return Response({"result": True, "message": "Successful", "data": {"device_id": device.id}}, status=status.HTTP_200_OK)
+			return Response({"result": True, "message": "Successful", "data": []}, status=status.HTTP_200_OK)
 	return Response({"result": False, "message": "Error!!!", "data": error}, status=status.HTTP_200_OK)
