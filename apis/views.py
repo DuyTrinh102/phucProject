@@ -117,7 +117,7 @@ def api_device_measure_update(request):
 
 	if not error:
 		try:
-			device = request.user.related_devices.get(serial=serial)
+			device = Device.objects.get(serial=serial)
 		except Device.DoesNotExist:
 			error.append({
 				"field": "serial",
