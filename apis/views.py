@@ -93,7 +93,7 @@ def api_device_measure_list(request):
 
 
 @api_view(['POST'])
-@permission_classes((permissions.IsAuthenticated,))
+@permission_classes((permissions.BasePermission,))
 def api_device_measure_update(request):
 	serial = request.data.get('serial', '')
 	value = request.data.get('value', '')
