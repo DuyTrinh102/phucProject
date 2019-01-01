@@ -104,7 +104,7 @@ def api_device_measure_update(request):
 			"field": "data",
 			"message": "Data is required"
 		})
-	else:
+	elif isinstance(data, unicode):
 		try:
 			data = ast.literal_eval(data)
 		except ValueError:
