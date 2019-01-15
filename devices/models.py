@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 class Measurement(models.Model):
-	value = models.IntegerField(default=0)
+	value = models.FloatField(default=0)
 	receive_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
