@@ -116,7 +116,6 @@ def api_device_measure_update(request):
 		if isinstance(data, list):
 			for data_temp in data:
 				if not isinstance(data_temp, dict) or ['serial', 'value'] != data_temp.keys():
-					print data_temp.keys()
 					break
 				else:
 					try:
@@ -129,7 +128,7 @@ def api_device_measure_update(request):
 					else:
 						measure = Measurement.objects.create(value=data_temp['value'])
 						device.measure.add(measure)
-						return Response({"result": True, "message": "Successful", "data": []}, status=status.HTTP_200_OK)
+			return Response({"result": True, "message": "Successful", "data": []}, status=status.HTTP_200_OK)
 		error.append({
 			"field": "data",
 			"message": "Data is invalid"

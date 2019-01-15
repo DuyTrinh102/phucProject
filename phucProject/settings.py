@@ -24,7 +24,7 @@ SECRET_KEY = 'yz89p12ns$7=ab5#xurs+15$5pdoehbt#x61-g-9brx9k8yl&a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'phucproject.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'phucproject.pythonanywhere.com', '192.168.1.28']
 
 # Application definition
 
